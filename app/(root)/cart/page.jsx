@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
-import { removeFromCart } from "@/lib/features/cartSlice";
+import { removeFromCart, applyDiscount } from "@/lib/features/cartSlice";
 
 export default function CartPage() {
+  const [discountCode, setDiscountCode] = useState("");
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -15,8 +16,20 @@ export default function CartPage() {
     toast.success("Item removed from cart");
   };
 
+  const handleApplyDiscount = () => {
+    if (discountCode === "SUMMER10") {
+      dispatch(applyDiscount({ type: "percentage", value: 10 }));
+      toast.success("10% discount applied!");
+    } else if (discountCode === "FLAT20") {
+      dispatch(applyDiscount({ type: "fixed", value: 20 }));
+      toast.success("$20 discount applied!");
+    } else {
+      toast.error("Invalid discount code");
+    }
+    setDiscountCode("");
+  };
+
   const handleCheckout = () => {
-    // TODO: Implement checkout logic here
     toast.success("Checkout successful!");
   };
 
@@ -70,6 +83,10 @@ export default function CartPage() {
                 <span>${cart.totalAmount.toFixed(2)}</span>
               </div>
               <div className="flex justify-between mb-2">
+                <span>Discount:</span>
+                <span>-${cart.discount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between mb-2">
                 <span>Shipping:</span>
                 <span>Free</span>
               </div>
@@ -77,16 +94,36 @@ export default function CartPage() {
                 <div className="flex justify-between mb-2">
                   <span className="font-semibold">Total:</span>
                   <span className="font-semibold">
-                    ${cart.totalAmount.toFixed(2)}
+                    ${(cart.totalAmount - cart.discount).toFixed(2)}
                   </span>
                 </div>
               </div>
-              <button
-                onClick={handleCheckout}
-                className="bg-blue-600 text-white w-full py-2 rounded mt-4 hover:bg-blue-700 transition-colors"
-              >
-                Proceed to Checkout
-              </button>
+              <div className="mt-4">
+                <label htmlFor="discountCode" className="block mb-1">
+                  Discount Code
+                </label>
+                <div className="flex">
+                  <input
+                    type="text"
+                    id="discountCode"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    className="flex-grow border rounded-l px-3 py-2"
+                    placeholder="Enter code"
+                  />
+                  <button
+                    onClick={handleApplyDiscount}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-r hover:bg-blue-700 transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+              <Link href="/checkout">
+                <button className="bg-blue-600 text-white w-full py-2 rounded mt-4 hover:bg-blue-700 transition-colors">
+                  Proceed to Checkout
+                </button>
+              </Link>
             </div>
           </div>
         </div>
