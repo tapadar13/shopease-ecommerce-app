@@ -14,6 +14,20 @@ export default function CartPage() {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  const handleIncrementItem = (id) => {
+    dispatch(incrementItem(id));
+  };
+
+  const handleDecrementItem = (id) => {
+    dispatch(decrementItem(id));
+  };
+
+  const confirmClearCart = () => {
+    dispatch(clearCart());
+    setShowClearCartConfirm(false);
+    toast.success("Cart cleared successfully");
+  };
+
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart(id));
     toast.success("Item removed from cart");
@@ -84,13 +98,19 @@ export default function CartPage() {
                   </div>
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-2 bg-gray-100 rounded-full p-1">
-                      <button className="p-1 rounded-full bg-white hover:bg-gray-200 transition-colors duration-300">
+                      <button
+                        onClick={() => handleDecrementItem(item.id)}
+                        className="p-1 rounded-full bg-white hover:bg-gray-200 transition-colors duration-300"
+                      >
                         <Minus className="w-4 h-4 text-gray-600" />
                       </button>
                       <span className="font-semibold text-gray-800 w-8 text-center">
                         {item.quantity}
                       </span>
-                      <button className="p-1 rounded-full bg-white hover:bg-gray-200 transition-colors duration-300">
+                      <button
+                        onClick={() => handleIncrementItem(item.id)}
+                        className="p-1 rounded-full bg-white hover:bg-gray-200 transition-colors duration-300"
+                      >
                         <Plus className="w-4 h-4 text-gray-600" />
                       </button>
                     </div>
@@ -195,11 +215,7 @@ export default function CartPage() {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  // Implement clear cart logic here
-                  setShowClearCartConfirm(false);
-                  toast.success("Cart cleared successfully");
-                }}
+                onClick={confirmClearCart}
                 className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors duration-300"
               >
                 Clear Cart
