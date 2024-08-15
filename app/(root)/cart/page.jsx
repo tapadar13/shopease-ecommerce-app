@@ -6,7 +6,13 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { Trash2, Plus, Minus, ShoppingBag, X } from "lucide-react";
 import { toast } from "sonner";
-import { removeFromCart, applyDiscount } from "@/lib/features/cartSlice";
+import {
+  removeFromCart,
+  applyDiscount,
+  incrementItem,
+  decrementItem,
+  clearCart,
+} from "@/lib/features/cartSlice";
 
 export default function CartPage() {
   const [discountCode, setDiscountCode] = useState("");
