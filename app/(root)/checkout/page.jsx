@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
 import { clearCart } from "@/lib/features/cartSlice";
@@ -10,6 +11,7 @@ import OrderSummary from "./components/OrderSummary";
 export default function CheckoutPage() {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { formData, errors, handleChange, validateForm } = useCheckoutForm({
     fullName: "",
@@ -28,6 +30,11 @@ export default function CheckoutPage() {
       const orderNumber = Math.floor(100000 + Math.random() * 900000);
       toast.success("Order placed successfully!");
       dispatch(clearCart());
+      router.push(
+        `/thank-you?orderNumber=${orderNumber}&total=${(
+          cart.totalAmount * 1.1
+        ).toFixed(2)}`
+      );
     }
   };
 
