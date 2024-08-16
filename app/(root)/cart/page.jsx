@@ -56,10 +56,6 @@ export default function CartPage() {
     setShowClearCartConfirm(true);
   };
 
-  const handleCheckout = () => {
-    toast.success("Checkout successful!");
-  };
-
   return (
     <div className="container mx-auto px-4 py-16">
       <h1 className="text-4xl text-gray-800 font-bold mb-8 text-center">

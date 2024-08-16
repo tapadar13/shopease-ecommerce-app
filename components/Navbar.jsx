@@ -5,14 +5,18 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { Search, ShoppingCart, User } from "lucide-react";
+import { Search, ShoppingCart, User, Heart } from "lucide-react";
 
 export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const router = useRouter();
   const { isSignedIn, user } = useUser();
+
   const cartItemsCount = useSelector((state) => state.cart.totalQuantity);
+  const wishlistItemsCount = useSelector(
+    (state) => state.wishlist.items.length
+  );
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -52,6 +56,17 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
+            <Link
+              href="/wishlist"
+              className="relative text-gray-600 hover:text-blue-600"
+            >
+              <Heart className="h-6 w-6" />
+              {wishlistItemsCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistItemsCount}
+                </span>
+              )}
+            </Link>
             <Link
               href="/cart"
               className="relative text-gray-600 hover:text-blue-600"

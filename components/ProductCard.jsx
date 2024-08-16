@@ -1,14 +1,21 @@
 import { useState } from "react";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { ShoppingCart, Heart, Star, Eye } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { ShoppingCart, Heart, Star } from "lucide-react";
 import { toast } from "sonner";
 import { addToCart } from "@/lib/features/cartSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "@/lib/features/wishlistSlice";
 
 export default function ProductCard({ product }) {
   const [isAdding, setIsAdding] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
+  // const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
+  const isLiked = useSelector((state) =>
+    state.wishlist.items.some((item) => item.id === product.id)
+  );
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -25,8 +32,13 @@ export default function ProductCard({ product }) {
   };
 
   const handleLike = () => {
-    setIsLiked(!isLiked);
-    toast.success(isLiked ? "Removed from favorites" : "Added to favorites");
+    if (isLiked) {
+      dispatch(removeFromWishlist(product.id));
+      toast.success("Removed from favorites");
+    } else {
+      dispatch(addToWishlist(product));
+      toast.success("Added to favorites");
+    }
   };
 
   return (
