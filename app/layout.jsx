@@ -18,7 +18,7 @@ export const metadata = {
     description: "Your one-stop shop for all your needs",
     images: [
       {
-        url: "/favicon.ico",
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`,
         width: 800,
         height: 600,
         alt: "ShopEase Logo",

@@ -2,7 +2,7 @@
 
 ShopEase is a modern e-commerce platform offering a seamless shopping experience for users.
 
-![ShopEase Logo](/shopease.png)
+![ShopEase Logo](/public/shopease.png)
 
 ## 🌟 Features
 
