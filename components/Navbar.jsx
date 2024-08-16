@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Search, ShoppingCart, User, Heart } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,7 +59,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <Link
               href="/wishlist"
-              className="relative text-gray-600 hover:text-blue-600"
+              className="relative text-gray-600 hover:text-primary"
             >
               <Heart className="h-6 w-6" />
               {wishlistItemsCount > 0 && (
@@ -69,7 +70,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/cart"
-              className="relative text-gray-600 hover:text-blue-600"
+              className="relative text-gray-600 hover:text-primary"
             >
               <ShoppingCart className="h-6 w-6" />
               {cartItemsCount > 0 && (
@@ -81,8 +82,15 @@ export default function Navbar() {
 
             {isSignedIn ? (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700">Hi, {user.firstName}</span>
-                <SignOutButton signOutCallback={() => router.push("/sign-in")}>
+                <span className="text-gray-700 hover:text-primary">
+                  Hi, {user.firstName}
+                </span>
+                <SignOutButton
+                  signOutCallback={() => {
+                    router.push("/sign-in");
+                    toast.success("You have been successfully signed out.");
+                  }}
+                >
                   <button className="bg-primary text-white px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300 shadow-lg hover:shadow-xl">
                     Sign Out
                   </button>
@@ -92,13 +100,13 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   href="/sign-in"
-                  className="text-gray-600 hover:text-blue-600"
+                  className="text-gray-600 hover:text-primary"
                 >
                   <User className="h-6 w-6" />
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="bg-primary text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300"
+                  className="bg-primary text-white px-4 py-2 rounded-full hover:bg-primary transition duration-300"
                 >
                   Register
                 </Link>
