@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useUser, SignOutButton } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import { Search, ShoppingCart, User, Heart } from "lucide-react";
 import { toast } from "sonner";
 
@@ -82,9 +83,15 @@ export default function Navbar() {
 
             {isSignedIn ? (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700 hover:text-primary">
-                  Hi, {user.firstName}
-                </span>
+                {user.imageUrl && (
+                  <Image
+                    src={user.imageUrl}
+                    alt="User avatar"
+                    width={40}
+                    height={40}
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
                 <SignOutButton
                   signOutCallback={() => {
                     router.push("/sign-in");
