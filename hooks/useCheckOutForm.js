@@ -6,12 +6,14 @@ const checkoutSchema = z.object({
   email: z.string().email("Invalid email address"),
   address: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
-  zipCode: z.string().regex(/^\d{5}$/, "Invalid ZIP code"),
-  cardNumber: z.string().regex(/^\d{16}$/, "Invalid card number"),
+  zipCode: z.string().regex(/^\d{5,6}$/, "ZIP code must be 5 or 6 digits"),
+  cardNumber: z
+    .string()
+    .regex(/^\d{13,19}$/, "Card number must be 13 to 19 digits"),
   expiryDate: z
     .string()
-    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Invalid expiry date (MM/YY)"),
-  cvv: z.string().regex(/^\d{3}$/, "Invalid CVV"),
+    .regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Invalid expiry date format (MM/YY)"),
+  cvv: z.string().regex(/^\d{3,4}$/, "CVV must be 3 or 4 digits"),
 });
 
 export const useCheckoutForm = (initialState) => {
