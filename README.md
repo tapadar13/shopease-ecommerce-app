@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ShopEase 🛒
 
-## Getting Started
+ShopEase is a modern e-commerce platform offering a seamless shopping experience for users.
 
-First, run the development server:
+![ShopEase Logo](/shopease.png)
+
+## 🌟 Features
+
+- 👤 User authentication (register, sign in)
+- 🏪 Browse and view products
+- ❤️ Add products to wishlist
+- 🛍️ Add products to cart
+- 💳 Checkout process
+- 📱 Responsive design
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 14
+- **Styling**: Tailwind CSS
+- **State Management**: Redux Toolkit
+- **Authentication**: Clerk
+- **Form Validation**: Zod
+- **Icons**: Lucide React
+- **Notifications**: Sonner
+- **HTTP Client**: Axios
+- **Containerization**: Docker
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18 or later
+- npm or yarn
+- Docker (optional)
+
+### Local Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/tapadar13/ecommerce-shopping-cart.git
+   cd shopease
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+
+   - Copy `.env.example` to `.env`
+   - Fill in the required values
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Docker Setup
+
+1. Build the Docker image:
+
+   ```bash
+   docker build -t shopease .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 3000:3000 shopease
+   ```
+
+Alternatively, use Docker Compose:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker-compose up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🤝 Contributing
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+I welcome contributions to ShopEase! Please follow these steps:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a pull request
 
-## Learn More
+Please ensure your code adheres to the coding standards.
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the MIT License.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🙏 Acknowledgements
 
-## Deploy on Vercel
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Clerk](https://clerk.dev/)
+- [Lucide React](https://lucide.dev/)
+- [Sonner](https://sonner.emilkowal.ski/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Made with ❤️ by [Tapadar Monsur](https://x.com/Tapadar13)
