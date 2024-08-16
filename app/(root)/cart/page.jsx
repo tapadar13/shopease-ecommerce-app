@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import {
   removeFromCart,
   applyDiscount,
+  removeDiscount,
   incrementItem,
   decrementItem,
   clearCart,
@@ -41,15 +42,22 @@ export default function CartPage() {
 
   const handleApplyDiscount = () => {
     if (discountCode === "SUMMER10") {
-      dispatch(applyDiscount({ type: "percentage", value: 10 }));
+      dispatch(
+        applyDiscount({ type: "percentage", value: 10, code: "SUMMER10" })
+      );
       toast.success("10% discount applied!");
     } else if (discountCode === "FLAT20") {
-      dispatch(applyDiscount({ type: "fixed", value: 20 }));
+      dispatch(applyDiscount({ type: "fixed", value: 20, code: "FLAT20" }));
       toast.success("$20 discount applied!");
     } else {
       toast.error("Invalid discount code");
     }
     setDiscountCode("");
+  };
+
+  const handleRemoveDiscount = () => {
+    dispatch(removeDiscount());
+    toast.success("Discount removed");
   };
 
   const handleClearCart = () => {
@@ -152,6 +160,24 @@ export default function CartPage() {
                     -${cart.discount.toFixed(2)}
                   </span>
                 </div>
+                {cart.appliedDiscount && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">
+                      Discount ({cart.appliedDiscount.code})
+                    </span>
+                    <div className="flex items-center">
+                      <span className="font-semibold text-green-600 mr-2">
+                        -${cart.discount.toFixed(2)}
+                      </span>
+                      <button
+                        onClick={handleRemoveDiscount}
+                        className="text-red-500 hover:text-red-700 transition-colors duration-300"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-semibold text-green-600">Free</span>
@@ -167,30 +193,43 @@ export default function CartPage() {
                   </span>
                 </div>
               </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="discountCode"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Discount Code
-                </label>
-                <div className="flex">
-                  <input
-                    type="text"
-                    id="discountCode"
-                    value={discountCode}
-                    onChange={(e) => setDiscountCode(e.target.value)}
-                    className="flex-grow border-2 border-r-0 border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-prima-primary focus:border-transparent"
-                    placeholder="Enter code"
-                  />
-                  <button
-                    onClick={handleApplyDiscount}
-                    className="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              {!cart.appliedDiscount && (
+                <div className="mb-6">
+                  <label
+                    htmlFor="discountCode"
+                    className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Apply
-                  </button>
+                    Discount Code
+                  </label>
+                  <div className="flex flex-col">
+                    <div className="flex mb-2">
+                      <input
+                        type="text"
+                        id="discountCode"
+                        value={discountCode}
+                        onChange={(e) => setDiscountCode(e.target.value)}
+                        className="flex-grow border-2 border-r-0 border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="Enter code"
+                      />
+                      <button
+                        onClick={handleApplyDiscount}
+                        className="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <p className="font-medium mb-1">
+                        Available coupon codes:
+                      </p>
+                      <ul className="list-disc list-inside">
+                        <li>SUMMER10 - 10% off your order</li>
+                        <li>FLAT20 - $20 off your order</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
               <Link href="/checkout">
                 <button className="w-full bg-primary text-white py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                   Proceed to Checkout
