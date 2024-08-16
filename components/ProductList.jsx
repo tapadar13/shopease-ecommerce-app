@@ -20,9 +20,9 @@ export default function ProductList() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://api.escuelajs.co/api/v1/products?limit=24"
+          "https://api.escuelajs.co/api/v1/products?limit=25"
         );
-        setProducts(response.data.slice(0, 24));
+        setProducts(response.data.slice(1, 25));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
