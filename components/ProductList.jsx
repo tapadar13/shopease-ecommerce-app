@@ -23,10 +23,10 @@ export default function ProductList() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://api.escuelajs.co/api/v1/products?limit=25"
+          "https://api.escuelajs.co/api/v1/products?limit=33"
         );
-        setProducts(response.data.slice(1, 25));
-        setFilteredProducts(response.data.slice(1, 25));
+        setProducts(response.data.slice(1, 33));
+        setFilteredProducts(response.data.slice(1, 33));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -52,7 +52,8 @@ export default function ProductList() {
     if (category !== "all") {
       result = result.filter(
         (product) =>
-          product.category.name.toLowerCase() === category.toLowerCase()
+          product.category.name.toLowerCase().trim() ===
+          category.toLowerCase().trim()
       );
     }
 

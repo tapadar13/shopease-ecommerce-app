@@ -30,6 +30,7 @@ export default function ProductFilters({
           <option value="all">All Categories</option>
           <option value="clothes">Clothes</option>
           <option value="electronics">Electronics</option>
+          <option value="furniture">Furniture</option>
         </select>
       </div>
       <div className="w-full sm:w-auto">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { ShoppingCart, Heart, Star } from "lucide-react";
+import { ShoppingCart, Heart, Star, ImageOff } from "lucide-react";
 import { toast } from "sonner";
 import { addToCart } from "@/lib/features/cartSlice";
 import {
@@ -9,13 +9,26 @@ import {
   removeFromWishlist,
 } from "@/lib/features/wishlistSlice";
 
+const FallbackImage = () => (
+  <div className="w-full h-64 bg-gray-100 flex items-center justify-center">
+    <div className="text-center">
+      <ImageOff className="w-12 h-12 text-primary mx-auto mb-2" />
+      <p className="text-sm text-gray-500">Image unavailable</p>
+    </div>
+  </div>
+);
+
 export default function ProductCard({ product }) {
   const [isAdding, setIsAdding] = useState(false);
-  // const [isLiked, setIsLiked] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const dispatch = useDispatch();
   const isLiked = useSelector((state) =>
     state.wishlist.items.some((item) => item.id === product.id)
   );
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -44,13 +57,18 @@ export default function ProductCard({ product }) {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
       <div className="relative group">
-        <Image
-          src={product.images[1]}
-          alt={product.title}
-          width={400}
-          height={300}
-          className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-        />
+        {imageError ? (
+          <FallbackImage />
+        ) : (
+          <Image
+            src={product.images[1]}
+            alt={product.title}
+            width={400}
+            height={300}
+            className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={handleImageError}
+          />
+        )}
         <button
           onClick={handleLike}
           className="absolute top-4 right-4 p-2 bg-white rounded-full shadow-md transition-colors duration-300 hover:bg-gray-100"
@@ -62,7 +80,7 @@ export default function ProductCard({ product }) {
           />
         </button>
         <div className="absolute bottom-4 left-4 bg-white px-2 py-1 rounded-full text-sm font-semibold text-gray-800">
-          {product.category.name}
+          {product.category?.name || "Uncategorized"}
         </div>
       </div>
       <div className="p-6">
