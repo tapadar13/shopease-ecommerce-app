@@ -1,50 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import { toast } from "sonner";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import ProductFilters from "./ProductFilters";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useProducts } from "@/hooks/useProducts";
 
 export default function ProductList() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [category, setCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
 
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get("search");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.escuelajs.co/api/v1/products?limit=33"
-        );
-        setProducts(response.data.slice(1, 33));
-        setFilteredProducts(response.data.slice(1, 33));
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError("Failed to fetch products. Please try again later.");
-        setLoading(false);
-        toast.error("Failed to fetch products");
-      }
-    };
-    fetchProducts();
-  }, []);
+  const { data: products, isLoading, error } = useProducts();
 
-  useEffect(() => {
+  const filteredAndSortedProducts = useMemo(() => {
+    if (!products) return [];
+
     let result = [...products];
 
     // Search filter
-    if (searchTerm) {
+    if (debouncedSearchTerm) {
       result = result.filter((product) =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        product.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
       );
     }
 
@@ -74,19 +56,24 @@ export default function ProductList() {
       default:
         break;
     }
-    setFilteredProducts(result);
-  }, [searchTerm, products, category, sortBy]);
 
-  const handleFilterChange = (newCategory) => {
+    return result;
+  }, [products, debouncedSearchTerm, category, sortBy]);
+
+  const handleFilterChange = useCallback((newCategory) => {
     setCategory(newCategory);
-  };
+  }, []);
 
-  const handleSortChange = (newSortBy) => {
+  const handleSortChange = useCallback((newSortBy) => {
     setSortBy(newSortBy);
-  };
+  }, []);
 
   if (error) {
-    return <div className="text-red-500 text-center">{error}</div>;
+    return (
+      <div className="text-red-500 text-center">
+        Failed to fetch products. please try again later.
+      </div>
+    );
   }
 
   return (
@@ -98,11 +85,11 @@ export default function ProductList() {
         onSortChange={handleSortChange}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading
+        {isLoading
           ? Array(8)
               .fill()
               .map((_, index) => <ProductCardSkeleton key={index} />)
-          : filteredProducts.map((product) => (
+          : filteredAndSortedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
       </div>

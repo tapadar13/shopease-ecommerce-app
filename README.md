@@ -12,6 +12,7 @@ ShopEase is a modern e-commerce platform offering a seamless shopping experience
 - 🛍️ Add products to cart
 - 💳 Checkout process
 - 📱 Responsive design
+- 🚀 Optimized data fetching and state management
 
 ## 🛠️ Tech Stack
 
@@ -19,6 +20,7 @@ ShopEase is a modern e-commerce platform offering a seamless shopping experience
 - **Styling**: Tailwind CSS
 - **State Management**: Redux Toolkit
 - **Authentication**: Clerk
+- **Data Fetching**: TanStack Query
 - **Form Validation**: Zod
 - **Icons**: Lucide React
 - **Notifications**: Sonner
@@ -101,6 +103,7 @@ This project is licensed under the MIT License.
 - [Next.js](https://nextjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
+- [TanStack Query](https://tanstack.com/query/latest)
 - [Clerk](https://clerk.dev/)
 - [Lucide React](https://lucide.dev/)
 - [Sonner](https://sonner.emilkowal.ski/)

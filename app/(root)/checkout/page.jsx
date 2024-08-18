@@ -28,7 +28,9 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (validateForm()) {
       const orderNumber = Math.floor(100000 + Math.random() * 900000);
-      toast.success("Order placed successfully!");
+      setTimeout(() => {
+        toast.success("Order placed successfully!");
+      }, 800);
       dispatch(clearCart());
       router.push(
         `/thank-you?orderNumber=${orderNumber}&total=${(
